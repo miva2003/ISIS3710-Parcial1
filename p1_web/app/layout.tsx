@@ -20,6 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased flex flex-col min-h-screen">
         <Header routes={[
+          { name: "Premios", path: "/prizes" },
           { name: "Géneros", path: "/genres" },
           { name: "Plataformas", path: "/platforms" },
           { name: "Directores", path: "/directors" },

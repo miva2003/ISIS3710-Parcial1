@@ -8,14 +8,17 @@ import { movieService } from '../services/movieService'
 import { MovieFormValues } from '../validation/movieSchema'
 import MovieForm from '../ui/MovieForm'
 import { useNotificationStore } from '@/shared/store/notificationStore'
+import { usePrizes } from '@/modules/prizes/hooks/usePrize'
 
 export default function MovieCreatePage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [selectedActorIds, setSelectedActorIds] = useState<string[]>([])
   const [selectedPlatformIds, setSelectedPlatformIds] = useState<string[]>([])
+  const [selectedPrizeIds, setSelectedPrizeIds] = useState<string[]>([])
   const { addMovie } = useMovies()
   const { actors } = useActors()
   const { platforms } = usePlatforms()
+  const {prizes} = usePrizes()
   const router = useRouter()
   const { showNotification } = useNotificationStore()
 
@@ -38,6 +41,10 @@ export default function MovieCreatePage() {
         await movieService.associateActor(created.id, actorId)
       }
 
+      for (const prizeId of selectedPrizeIds) {
+        await movieService.associatePrize(created.id, prizeId)
+      }
+
       for (const platformId of selectedPlatformIds) {
         await movieService.associatePlatform(created.id, platformId)
       }
@@ -52,6 +59,8 @@ export default function MovieCreatePage() {
       setIsSubmitting(false)
     }
   }
+
+  
 
   return (
     <div className="p-8">
@@ -69,6 +78,22 @@ export default function MovieCreatePage() {
             {actors.map((actor) => (
               <option key={actor.id} value={actor.id}>
                 {actor.name}
+              </option>
+            ))}
+          </select>
+          <p className="text-sm text-gray-400 mt-1">Mantén Ctrl para seleccionar varios</p>
+        </div>
+
+        <div>
+          <label className="block font-medium mb-1">Premios</label>
+          <select
+            multiple
+            onChange={handlePlatformChange}
+            className="w-full p-2 border rounded h-32"
+          >
+            {prizes.map((prize) => (
+              <option key={prize.id} value={prize.id}>
+                {prize.name}
               </option>
             ))}
           </select>

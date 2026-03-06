@@ -18,7 +18,7 @@ export const movieService = {
     }),
 
   associateActor: (movieId: string, actorId: string) =>
-    fetcher<void>(`/movies/${movieId}/actors/${actorId}`, {
+    fetcher<void>(`/actora/${actorId}/movies/${movieId}`, {
         method: 'POST',
     }),
 
@@ -27,6 +27,10 @@ export const movieService = {
         method: 'POST',
     }),
 
+  associatePrize: (movieId: string, prizeId: string) =>
+    fetcher<void>(`/movies/${movieId}/prizes/${prizeId}`, {
+        method: 'POST',
+    }),
     
   update: (id: string, data: MovieFormValues) =>
     fetcher<Movie>(`/movies/${id}`, {
